@@ -32,6 +32,8 @@ const userRegister = asyncHandler(async (req, res) => {
   // get user and remove password and refresh token
   // return user
 
+  console.log("user come for register")
+
   try {
     const { name, email, password } = req.body;
     if ([name, email, password].some((field) => field?.trim() === "")) {
@@ -66,7 +68,7 @@ const userRegister = asyncHandler(async (req, res) => {
       );
     }
 
-    return res
+    return res 
       .status(200)
       .json(new ApiResponse(200, user[0], "User registered successfully"));
   } catch (error) {
@@ -82,6 +84,9 @@ const userLogin = asyncHandler(async (req, res) => {
   // generate refresh and access token
   // update user with refresh token
   // return res cookie token
+
+    console.log("user come for login");
+
   try {
     const { email, password } = req.body;
     if ([email, password].some((field) => field.trim() === "")) {
