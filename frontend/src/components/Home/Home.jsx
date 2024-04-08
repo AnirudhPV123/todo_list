@@ -106,7 +106,11 @@ function Home() {
         className="w-12 bg-yellow-300 overflow-hidden rounded-full border-2 absolute right-4 cursor-pointer"
         onClick={() => setShowMenu(!showMenu)}
       >
-        <img className="w-12" src="./images/profile_icon.jpeg" alt="" />
+        <img
+          className="w-12"
+          src="../../../public/images/profile_icon.jpeg"
+          alt=""
+        />
       </div>
 
       <div
@@ -149,7 +153,7 @@ function Home() {
           type="submit"
           className="bg-blue-700 cursor-pointer h-full w-16 flex justify-center items-center rounded-md"
         >
-          <img className="w-8" src="./images/add.svg" alt="" />
+          <img className="w-8" src="../../../public/images/add.svg" alt="" />
         </button>
       </form>
       <div>

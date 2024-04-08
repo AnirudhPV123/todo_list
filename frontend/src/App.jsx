@@ -3,10 +3,8 @@ import { Outlet } from "react-router-dom";
 import { getCurrentUser, refreshToken } from "./db/auth";
 import { useDispatch } from "react-redux";
 import { login as authLogin } from "./store/storeSlice";
-import { addTodosSlice } from "./store/todoSlice";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getTodo, addTodo } from "./db/todo";
 
 function App() {
   const dispatch = useDispatch();
