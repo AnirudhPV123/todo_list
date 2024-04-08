@@ -10,8 +10,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { userLogout } from "../../db/auth";
 import { logout } from "../../store/storeSlice";
-import { addTodoSlice } from "../../store/todoSlice";
-import { addTodo } from "../../db/todo";
+import { addTodoSlice, addTodosSlice } from "../../store/todoSlice";
+import { addTodo, getTodo } from "../../db/todo";
 
 function Home() {
   const userData = useSelector((state) => state.auth.userData);
@@ -24,6 +24,36 @@ function Home() {
   const [showMenu, setShowMenu] = useState(false);
   const [tittle, setTittle] = useState("");
   const [completed, setCompleted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      const todos = await JSON.parse(localStorage.getItem("todos"));
+      if (todos.length > 0) {
+        await addTodo(todos);
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const todos = await getTodo();
+      if (todos.length > 0) {
+        setLoading(false);
+        dispatch(addTodosSlice(todos));
+        localStorage.setItem("todos", JSON.stringify(todos));
+      }
+      setLoading(false);
+    })();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -45,13 +75,13 @@ function Home() {
 
   const logoutHandler = useCallback(async () => {
     try {
-      await userLogout();
       const storedTodos = JSON.parse(localStorage.getItem("todos"));
       localStorage.setItem("todos", "");
 
       if (storedTodos && storedTodos.length > 0) {
         await addTodo(storedTodos);
       }
+      await userLogout();
       dispatch(logout());
       navigate("/login");
     } catch (error) {
@@ -76,11 +106,7 @@ function Home() {
         className="w-12 bg-yellow-300 overflow-hidden rounded-full border-2 absolute right-4 cursor-pointer"
         onClick={() => setShowMenu(!showMenu)}
       >
-        <img
-          className="w-12"
-          src="../../../public/images/profile_icon.jpeg"
-          alt=""
-        />
+        <img className="w-12" src="./images/profile_icon.jpeg" alt="" />
       </div>
 
       <div
@@ -128,6 +154,14 @@ function Home() {
       </form>
       <div>
         <ul className="flex flex-col">
+          <div
+            className={`flex justify-center ${
+              loading ? "opacity-100" : "opacity-0"
+            } `}
+          >
+            <div className="loader"></div>
+          </div>
+
           {todos.map((todo) => (
             <TodoList key={todo.id} todo={todo} />
           ))}

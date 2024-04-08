@@ -11,6 +11,7 @@ function SignUp() {
   const [error, setError] = useState("");
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [loader, setLoader] = useState(false);
 
   const {
     register,
@@ -20,11 +21,13 @@ function SignUp() {
 
   const signup = async (data) => {
     setError("");
+    setLoader(true)
     userSignUp(data)
       .then(() => {
         userLogin(data)
           .then((res) => {
             dispatch(authLogin(res.data.data.user))
+            setLoader(false)
             navigate("/")
           })
           .catch(() => {
@@ -38,6 +41,7 @@ function SignUp() {
           setError("Something went wrong try agian later");
         }
       });
+
   };
 
   return (
@@ -94,7 +98,21 @@ function SignUp() {
           </p>
         )}
 
-        <Button type="submit">SignUp</Button>
+        <Button type="submit" style={{ position: "relative" }}>
+          SignUp
+          <div
+            className="flex justify-center"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              opacity: loader ? "1" : "0",
+            }}
+          >
+            <div className="loader"></div>
+          </div>
+        </Button>
         <div className="flex justify-center">
           <span className="mt-3">
             Already have an account ?{" "}

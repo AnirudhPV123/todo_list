@@ -91,11 +91,10 @@ const userLogin = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
 
     const checkPasswordCorrect = await user.isPasswordCorrect(password);
-console.log("here1")
+
     if (!checkPasswordCorrect) {
-     throw new ApiError(404, "Invalid user credentials");
+      throw new ApiError(404, "Invalid Password");
     }
-    console.log("here2")
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
       user._id
@@ -122,6 +121,7 @@ console.log("here1")
         )
       );
   } catch (error) {
+    console.log(error.statusCode);
     throw new ApiError(error.statusCode, error);
   }
 });
@@ -150,7 +150,6 @@ const userLogout = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "User data fetched successfully"));
@@ -182,7 +181,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken: newRefreshToken } =
       await generateAccessAndRefreshToken(decodedToken);
- 
+
     const options = {
       httpOnly: true,
       secure: true,
@@ -202,7 +201,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new ApiError(
       error.statusCode,
-      error|| "Something went wrong while refreshig access token"
+      error || "Something went wrong while refreshig access token"
     );
   }
 });

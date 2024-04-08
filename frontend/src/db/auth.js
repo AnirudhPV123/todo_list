@@ -19,7 +19,7 @@ const userLogin = (data) => {
       return res;
     })
     .catch((error) => {
-      throw error;
+      throw error.response.status;
     });
 };
 
@@ -28,32 +28,31 @@ const getCurrentUser = () => {
     .get(`${conf.backendUserPath}/user`)
     .then((res) => res)
     .catch((error) => {
-      throw error
+      throw error;
     });
 };
 
-const refreshToken = ()=>{
-  console.log("refresh")
-    return axios
-      .post(`${conf.backendUserPath}/refresh-token`)
-      .then((res) => {
-        return res
-      })
-      .catch((error) => {
-        console.log(error)
-        throw error;
+const refreshToken = () => {
+  console.log("refresh");
+  return axios
+    .post(`${conf.backendUserPath}/refresh-token`)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      console.log(error);
+      throw error;
+    });
+};
 
-      });
-}
+const userLogout = () => {
+  console.log("here");
+  return axios
+    .post(`${conf.backendUserPath}/logout`)
+    .then((res) => res)
+    .catch((error) => {
+      throw error;
+    });
+};
 
-const userLogout = ()=>{
-  console.log("here")
-    return axios
-      .post(`${conf.backendUserPath}/logout`)
-      .then((res) => res)
-      .catch((error) => {
-        throw error;
-      });
-}
-
-export { userSignUp, userLogin, getCurrentUser,refreshToken ,userLogout };
+export { userSignUp, userLogin, getCurrentUser, refreshToken, userLogout };

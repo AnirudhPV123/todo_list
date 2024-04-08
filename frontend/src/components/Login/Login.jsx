@@ -13,6 +13,7 @@ function Login() {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     if (authStatus) {
@@ -28,17 +29,26 @@ function Login() {
 
   const login = async (data) => {
     setError("");
+    setLoader(true);
     try {
-      userLogin(data).then((res) => {
-        dispatch(authLogin(res.data.data.user));
-        navigate("/");
-      });
+      userLogin(data)
+        .then((res) => {
+          setLoader(false);
+          dispatch(authLogin(res.data.data.user));
+          navigate("/");
+        })
+        .catch((error) => {
+          setLoader(false)
+          console.log(error)
+          if (error === 404) {
+            console.log(error);
+            setError("Invalid password");
+          } else {
+            setError("Something went wrong try agian later");
+          }
+        });
     } catch (error) {
-      if (error?.response?.status === 404) {
-        setError("Invalide password");
-      } else {
-        setError("Something went wrong try agian later");
-      }
+      console.log("something went wrong");
     }
   };
 
@@ -84,7 +94,22 @@ function Login() {
           </p>
         )}
 
-        <Button type="submit">Login</Button>
+        <Button type="submit" style={{ position: "relative" }}>
+          Login
+          <div
+            className="flex justify-center"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              opacity: loader ? "1" : "0",
+            }}
+          >
+            <div className="loader"></div>
+          </div>
+        </Button>
+
         <div className="flex justify-center">
           <span className="mt-3">
             Create an account ?{" "}

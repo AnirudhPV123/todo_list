@@ -15,34 +15,8 @@ function App() {
 
 
 
-  useEffect(() => {
 
-      const handleBeforeUnload = async () => {
-        const todos = await JSON.parse(localStorage.getItem("todos"));
-        if(todos.length>0){
-          await addTodo(todos);
-        }
-      };
 
-      window.addEventListener("beforeunload", handleBeforeUnload);
-
-      return () => {
-        window.removeEventListener("beforeunload", handleBeforeUnload);
-      };
-
-  }, []);
-
-      useEffect(() => {
-
-          (async () => {
-            const todos = await getTodo();
-            if(todos.length > 0){
-            dispatch(addTodosSlice(todos));
-            localStorage.setItem("todos", JSON.stringify(todos));
-            }
-          })();
-
-      }, []);
 
 
   useEffect(() => {
