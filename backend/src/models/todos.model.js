@@ -2,6 +2,10 @@ import mongoose, { Schema } from "mongoose";
 
 const todoSchema = new Schema(
   {
+    id:{
+      type:String,
+      required:true
+    },
     tittle: {
       type: String,
       required: true,
