@@ -3,7 +3,9 @@ import { deleteTodoSlice, updateTodoSlice } from "../store/todoSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-import editImg from "../../public/images/edit.png"
+import editImg from "../../public/images/edit.svg";
+import deleteImg from "../../public/images/delete.svg";
+import submitIng from "../../public/images/submit.svg";
 
 function TodoList({ todo }) {
   const [isEditable, setIsEditable] = useState(false);
@@ -58,7 +60,7 @@ function TodoList({ todo }) {
           !isEditable ? "visible" : "hidden"
         } `}
       >
-        <img className="w-8" src="../../public/images/edit.svg" alt="" />
+        <img className="w-8" src={editImg} alt="" />
       </button>
       {/* submit */}
       <button
@@ -70,13 +72,13 @@ function TodoList({ todo }) {
           isEditable ? "visible" : "hidden"
         } `}
       >
-        <img className="w-5" src="../../public/images/submit.svg" alt="" />
+        <img className="w-5" src={submitIng} alt="" />
       </button>
       <button
         onClick={todoDeleteHandler}
         className="bg-red-700 h-full w-14 cursor-pointer flex justify-center items-center rounded-md"
       >
-        <img className="w-8" src={editImg} alt="" />
+        <img className="w-8" src={deleteImg} alt="" />
       </button>
     </li>
   );

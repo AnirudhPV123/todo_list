@@ -13,6 +13,9 @@ import { logout } from "../../store/storeSlice";
 import { addTodoSlice, addTodosSlice } from "../../store/todoSlice";
 import { addTodo, getTodo } from "../../db/todo";
 
+import addImg from "../../../public/images/add.svg"
+import profileImg from "../../../public/images/profile_icon.jpeg"
+
 function Home() {
   const userData = useSelector((state) => state.auth.userData);
   const todos = useSelector((state) => state.todo.todoData);
@@ -108,7 +111,7 @@ function Home() {
       >
         <img
           className="w-12"
-          src="../../../public/images/profile_icon.jpeg"
+          src={profileImg}
           alt=""
         />
       </div>
@@ -153,7 +156,7 @@ function Home() {
           type="submit"
           className="bg-blue-700 cursor-pointer h-full w-16 flex justify-center items-center rounded-md"
         >
-          <img className="w-8" src="../../../public/images/add.svg" alt="" />
+          <img className="w-8" src={addImg} alt="" />
         </button>
       </form>
       <div>
