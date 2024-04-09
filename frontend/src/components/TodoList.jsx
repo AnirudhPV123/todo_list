@@ -3,6 +3,8 @@ import { deleteTodoSlice, updateTodoSlice } from "../store/todoSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
+import editImg from "../../public/images/edit.png"
+
 function TodoList({ todo }) {
   const [isEditable, setIsEditable] = useState(false);
   const [tittle, setTittle] = useState(todo.tittle);
@@ -74,7 +76,7 @@ function TodoList({ todo }) {
         onClick={todoDeleteHandler}
         className="bg-red-700 h-full w-14 cursor-pointer flex justify-center items-center rounded-md"
       >
-        <img className="w-8" src="../../public/images/edit.png" alt="" />
+        <img className="w-8" src={editImg} alt="" />
       </button>
     </li>
   );
