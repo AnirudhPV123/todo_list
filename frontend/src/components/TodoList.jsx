@@ -74,7 +74,7 @@ function TodoList({ todo }) {
         onClick={todoDeleteHandler}
         className="bg-red-700 h-full w-14 cursor-pointer flex justify-center items-center rounded-md"
       >
-        <img className="w-8" src="../../public/images/delete.svg" alt="" />
+        <img className="w-8" src="../../public/images/edit.png" alt="" />
       </button>
     </li>
   );
