@@ -1,6 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
+import { CustomError } from "../utils/CustomError.js";
+import { CustomResponse } from "../utils/CustomResponse.js";
 import { Todo } from "../models/todos.model.js";
 import mongoose from "mongoose";
 
@@ -15,9 +15,9 @@ const addTodo = asyncHandler(async (req, res) => {
 
     return res
       .status(200)
-      .json(new ApiResponse(200, todo, "Todo added successfully"));
+      .json(new CustomResponse(200, todo, "Todo added successfully"));
   } catch (error) {
-    throw new ApiError(500, "Something went wrong while adding todo"); 
+    throw new CustomError(500, "Something went wrong while adding todo"); 
   }
 });
 
@@ -34,10 +34,10 @@ const getCurrentUserTodos = asyncHandler(async (req, res) => {
     return res
       .status(200)
       .json(
-        new ApiResponse(200, todos, "Fetch all current user todos successfully")
+        new CustomResponse(200, todos, "Fetch all current user todos successfully")
       );
   } catch (error) {
-    throw new ApiError(500, "Something went wrong while fetching all todos");
+    throw new CustomError(500, "Something went wrong while fetching all todos");
   }
 });
 
