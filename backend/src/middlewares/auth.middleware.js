@@ -8,8 +8,6 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     // Extract token from cookies or headers
     const token = req.cookies?.accessToken || req.header('Authorization')?.replace('Bearer ', '');
 
-    console.log('token:', token);
-
     if (!token) {
       throw new CustomError(401, 'Unauthorized request.');
     }
@@ -17,7 +15,6 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     let decodedToken;
     try {
       decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-      console.log('decod:', decodedToken);
     } catch (error) {
       // Check for specific error types
       if (error.name === 'TokenExpiredError') {

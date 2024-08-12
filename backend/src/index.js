@@ -1,14 +1,14 @@
-import dotenv from "dotenv";
-import connectDB from "./db/index.js";
-import { app } from "./app.js";
+import dotenv from 'dotenv';
+import connectDB from './db/index.js';
+import { app } from './app.js';
 
-dotenv.config({ path: "./.env" });
+dotenv.config({ path: './.env' });
 
 connectDB()
   .then(() => {
-    console.log("running")
-    app.on("Error", (error) => {
-      console.log("ERRR: ", error);
+    console.log('running');
+    app.on('Error', (error) => {
+      console.log('ERRR: ', error);
       throw error;
     }),
       app.listen(process.env.PORT || 8000, () => {
@@ -16,5 +16,5 @@ connectDB()
       });
   })
   .catch((error) => {
-    console.log("MONGODB connection FAILED: ", error);
-  }); 
+    console.log('MONGODB connection FAILED: ', error);
+  });

@@ -5,7 +5,7 @@ import { User } from '../models/users.model.js';
 import jwt from 'jsonwebtoken';
 import { loginSchema, registerSchema } from '../validators/userValidators.js';
 import { cookieConfig as options } from '../config/cookieConfig.js';
-import { generateAccessAndRefreshToken } from '../utils/generateAccessAndRefreshToken.js';
+import { generateTokens } from '../utils/generateTokens.js';
 
 // User Registration
 const userRegister = asyncHandler(async (req, res) => {
@@ -30,8 +30,9 @@ const userRegister = asyncHandler(async (req, res) => {
     password,
   });
 
-  const { accessToken, refreshToken } = await generateAccessAndRefreshToken({
+  const { accessToken, refreshToken } = await generateTokens({
     userId: createdUser._id,
+    isGenerateRefreshToken: true,
   });
 
   // Store the refresh token in DB
@@ -72,7 +73,10 @@ const userLogin = asyncHandler(async (req, res) => {
     throw new CustomError(401, 'Invalid Password.');
   }
 
-  const { accessToken, refreshToken } = await generateAccessAndRefreshToken({ userId: user._id });
+  const { accessToken, refreshToken } = await generateTokens({
+    userId: user._id,
+    isGenerateRefreshToken: true,
+  });
 
   // Store refresh token in DB
   user.refreshToken = refreshToken;
@@ -109,15 +113,11 @@ const userLogout = asyncHandler(async (req, res) => {
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const incomingRefreshToken = req.cookies?.refreshToken || req.body.refreshToken;
 
-  console.log('refresh:', incomingRefreshToken);
-
   if (!incomingRefreshToken) {
     throw new CustomError(401, 'Refresh token required.');
   }
 
   const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
-
-  console.log('refresht', decodedToken);
 
   const user = await User.findById(decodedToken._id);
 
@@ -125,14 +125,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new CustomError(403, 'Invalid or expired refresh token.');
   }
 
-  const { accessToken, refreshToken: newRefreshToken } = await generateAccessAndRefreshToken({
+  const { accessToken } = await generateTokens({
     userId: user._id,
   });
 
   return res
     .status(200)
     .cookie('accessToken', accessToken, options)
-    .cookie('refreshToken', newRefreshToken, options)
     .json(new CustomResponse(200, 'Access token refreshed successfully'));
 });
 

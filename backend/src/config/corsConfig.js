@@ -1,11 +1,6 @@
-const allowedOrigins =
-  process.env.NODE_ENV === 'production'
-    ? [process.env.CORS_ORIGIN] // Set this to your production origin
-    : ['http://localhost:3000']; // Development origin
-
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000', // Fallback origin for development
   credentials: true,
 };
 
-export default corsOptions
+export default corsOptions;

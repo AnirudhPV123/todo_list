@@ -1,12 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 const todoSchema = new Schema(
   {
-    id:{
-      type:String,
-      required:true
-    },
-    tittle: {
+    title: {
       type: String,
       required: true,
     },
@@ -14,12 +10,12 @@ const todoSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    ownerId: {
+    userId: {
       type: Schema.Types.ObjectId,
-      ref:"User"
+      ref: 'User',
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export const Todo = mongoose.model("Todo", todoSchema);
+export const Todo = mongoose.model('Todo', todoSchema);
