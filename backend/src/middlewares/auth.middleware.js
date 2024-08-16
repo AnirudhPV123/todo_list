@@ -18,7 +18,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     } catch (error) {
       // Check for specific error types
       if (error.name === 'TokenExpiredError') {
-        throw new CustomError(401, 'Token expired.');
+        throw new CustomError(401, 'Token has expired.');
       }
       throw new CustomError(403, 'Invalid token.');
     }

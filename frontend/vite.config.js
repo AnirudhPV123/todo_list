@@ -1,14 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-
+import path from "path";
 
 export default defineConfig({
-  // this code only run on locally used for development 
-  // for deploy vercel.json check
-  server: {
-    proxy: {
-      "/api": "https://todo-list-r6ks.onrender.com",
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"), // Maps '@' to the 'src' directory
     },
   },
-  plugins: [react()],
-}); 
+});

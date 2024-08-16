@@ -12,15 +12,15 @@ const password = Joi.string()
     'any.required': 'Password is required',
   });
 
-const registerSchema = Joi.object({
-  name: Joi.string().min(3).required(),
+const registerValidatorSchema = Joi.object({
+  userName: Joi.string().min(3).required(),
   email,
   password,
 });
 
-const loginSchema = Joi.object({
+const loginValidatorSchema = Joi.object({
   email,
   password,
 });
 
-export { registerSchema, loginSchema };
+export { registerValidatorSchema, loginValidatorSchema };

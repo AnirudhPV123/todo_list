@@ -2,7 +2,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { CustomError } from '../utils/CustomError.js';
 import { CustomResponse } from '../utils/CustomResponse.js';
 import { Todo } from '../models/todos.model.js';
-import { addTodoSchema, updateTodoSchema } from '../validators/todoValidators.js';
+import { addTodoValidatorSchema, updateTodoValidatorSchema } from '../validators/todoValidators.js';
 
 // Add a new todo
 const addTodo = asyncHandler(async (req, res) => {
@@ -10,7 +10,7 @@ const addTodo = asyncHandler(async (req, res) => {
   const {
     error,
     value: { title, completed },
-  } = addTodoSchema.validate(req.body);
+  } = addTodoValidatorSchema.validate(req.body);
 
   if (error) {
     throw new CustomError(400, error.details[0].message);
@@ -32,10 +32,11 @@ const getTodo = asyncHandler(async (req, res) => {
 
 // Update a specific todo
 const updateTodo = asyncHandler(async (req, res) => {
+  const todoId = req.params.id;
   const {
     error,
-    value: { todoId, title, completed },
-  } = updateTodoSchema.validate(req.body);
+    value: { title, completed },
+  } = updateTodoValidatorSchema.validate(req.body);
 
   if (error) {
     throw new CustomError(400, error.details[0].message);
@@ -46,4 +47,12 @@ const updateTodo = asyncHandler(async (req, res) => {
   return res.status(200).json(new CustomResponse(200, updatedTodo, 'Todo updated successfully.'));
 });
 
-export { addTodo, getTodo, updateTodo };
+const deleteTodo = asyncHandler(async (req, res) => {
+  const todoId = req.params.id;
+
+  await Todo.findByIdAndDelete(todoId);
+
+  return res.status(200).json(new CustomResponse(200, 'Todo deleted successfully.'));
+});
+
+export { addTodo, getTodo, updateTodo, deleteTodo };

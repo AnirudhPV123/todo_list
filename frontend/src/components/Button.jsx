@@ -1,11 +1,18 @@
-import React from 'react'
+import PropTypes from "prop-types";
 
-function Button({type,children,...props}) {
+function Button({ children, ...props }) {
   return (
-    <button type={type} {...props} className="hover:bg-green-700 duration-150 bg-white hover:text-white text-black text-2xl font-semibold w-full py-2 rounded-sm">
+    <button
+      {...props}
+      className="relative w-full rounded-sm bg-white py-2 text-2xl font-semibold text-black duration-150 hover:bg-green-700 hover:text-white"
+    >
       {children}
     </button>
   );
 }
 
-export default Button
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default Button;

@@ -3,7 +3,7 @@ import { CustomError } from '../utils/CustomError.js';
 import { CustomResponse } from '../utils/CustomResponse.js';
 import { User } from '../models/users.model.js';
 import jwt from 'jsonwebtoken';
-import { loginSchema, registerSchema } from '../validators/userValidators.js';
+import { loginValidatorSchema, registerValidatorSchema } from '../validators/userValidators.js';
 import { cookieConfig as options } from '../config/cookieConfig.js';
 import { generateTokens } from '../utils/generateTokens.js';
 
@@ -11,8 +11,8 @@ import { generateTokens } from '../utils/generateTokens.js';
 const userRegister = asyncHandler(async (req, res) => {
   const {
     error,
-    value: { name, email, password },
-  } = registerSchema.validate(req.body);
+    value: { userName, email, password },
+  } = registerValidatorSchema.validate(req.body);
 
   if (error) {
     throw new CustomError(400, error.details[0].message);
@@ -25,7 +25,7 @@ const userRegister = asyncHandler(async (req, res) => {
   }
 
   const createdUser = await User.create({
-    name,
+    userName,
     email,
     password,
   });
@@ -55,7 +55,7 @@ const userLogin = asyncHandler(async (req, res) => {
   const {
     error,
     value: { email, password },
-  } = loginSchema.validate(req.body);
+  } = loginValidatorSchema.validate(req.body);
 
   if (error) {
     throw new CustomError(400, error.details[0].message);

@@ -1,17 +1,17 @@
 import Joi from 'joi';
 
-const title = Joi.string().required();
-const completed = Joi.boolean().required();
+const title = Joi.string();
+const completed = Joi.boolean();
 
-const addTodoSchema = Joi.object({
-  title,
-  completed,
+const addTodoValidatorSchema = Joi.object({
+  title: title.required(),
+  completed: completed.required(),
 });
 
-const updateTodoSchema = Joi.object({
-  title,
-  completed,
-  todoId: Joi.string().required(),
-});
+const updateTodoValidatorSchema = Joi.object({
+  // Validate that at least one of the following fields is present
+  title: title.optional(),
+  completed: completed.optional(),
+}).or('title', 'completed');
 
-export { addTodoSchema, updateTodoSchema };
+export { addTodoValidatorSchema,updateTodoValidatorSchema };
